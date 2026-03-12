@@ -25,10 +25,13 @@ public class MainActivity extends AppCompatActivity {
 
         Button pictureButton = findViewById(R.id.btnPictureMode);
         Button videoButton = findViewById(R.id.btnVideoMode);
+        Button glbButton = findViewById(R.id.btnGlbMode);
 
         pictureButton.setOnClickListener(v ->
                 startActivity(new Intent(MainActivity.this, PictureCarActivity.class)));
         videoButton.setOnClickListener(v ->
                 startActivity(new Intent(MainActivity.this, VideoCarActivity.class)));
+        glbButton.setOnClickListener(v ->
+                startActivity(new Intent(MainActivity.this, GlbCarActivity.class)));
     }
 }

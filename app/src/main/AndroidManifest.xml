@@ -17,6 +17,10 @@
             android:label="@string/video_title"
             android:exported="false" />
         <activity
+            android:name=".GlbCarActivity"
+            android:label="@string/glb_title"
+            android:exported="false" />
+        <activity
             android:name=".PictureCarActivity"
             android:label="@string/picture_title"
             android:exported="false" />
