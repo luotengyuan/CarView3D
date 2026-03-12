@@ -6,10 +6,13 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.view.Gravity;
 import android.view.MotionEvent;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.appbar.MaterialToolbar;
 
@@ -84,9 +87,13 @@ public class PictureCarActivity extends AppCompatActivity {
 
         MaterialToolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setTitle(R.string.picture_mode);
+        setTitle(R.string.picture_title);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(R.string.picture_title);
+        }
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_small);
         toolbar.setNavigationOnClickListener(v -> finish());
+        centerNavigationIcon(toolbar);
 
         imageView = findViewById(R.id.imageView);
         // 初始化当前显示图片编号
@@ -195,5 +202,18 @@ public class PictureCarActivity extends AppCompatActivity {
             imageView.setImageBitmap(bitmap);
             scrNum--;
         }
+    }
+
+    private void centerNavigationIcon(MaterialToolbar toolbar) {
+        toolbar.post(() -> {
+            for (int i = 0; i < toolbar.getChildCount(); i++) {
+                if (toolbar.getChildAt(i) instanceof ImageButton) {
+                    Toolbar.LayoutParams params = (Toolbar.LayoutParams) toolbar.getChildAt(i).getLayoutParams();
+                    params.gravity = Gravity.CENTER_VERTICAL;
+                    toolbar.getChildAt(i).setLayoutParams(params);
+                    return;
+                }
+            }
+        });
     }
 }

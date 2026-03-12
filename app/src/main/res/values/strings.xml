@@ -4,4 +4,6 @@
     <string name="video_description">3D视频</string>
     <string name="picture_mode">图片3D展示</string>
     <string name="video_mode">视频3D展示</string>
+    <string name="picture_title">图片3D展示</string>
+    <string name="video_title">视频3D展示</string>
 </resources>

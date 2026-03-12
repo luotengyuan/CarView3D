@@ -16,8 +16,11 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.appbar.MaterialToolbar;
 
@@ -75,9 +78,13 @@ public class VideoCarActivity extends AppCompatActivity implements SurfaceHolder
 
         MaterialToolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setTitle(R.string.video_mode);
+        setTitle(R.string.video_title);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(R.string.video_title);
+        }
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_small);
         toolbar.setNavigationOnClickListener(v -> finish());
+        centerNavigationIcon(toolbar);
 
         surfaceView = findViewById(R.id.videoSurfaceView);
         surfaceHolder = surfaceView.getHolder();
@@ -161,17 +168,17 @@ public class VideoCarActivity extends AppCompatActivity implements SurfaceHolder
     }
 
     @Override
-    public void surfaceCreated(SurfaceHolder holder) {
+    public void surfaceCreated(@NonNull SurfaceHolder holder) {
         initPlayer(holder);
     }
 
     @Override
-    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+    public void surfaceChanged(@NonNull SurfaceHolder holder, int format, int width, int height) {
         Log.d(TAG, "surfaceChanged width=" + width + ", height=" + height);
     }
 
     @Override
-    public void surfaceDestroyed(SurfaceHolder holder) {
+    public void surfaceDestroyed(@NonNull SurfaceHolder holder) {
         releasePlayer();
     }
 
@@ -182,7 +189,7 @@ public class VideoCarActivity extends AppCompatActivity implements SurfaceHolder
         isPrepared = false;
 
         try {
-            AssetFileDescriptor afd = getResources().openRawResourceFd(R.raw.car_view2);
+            AssetFileDescriptor afd = getResources().openRawResourceFd(R.raw.car_view);
             if (afd == null) {
                 Log.e(TAG, "openRawResourceFd returned null");
                 return;
@@ -253,18 +260,17 @@ public class VideoCarActivity extends AppCompatActivity implements SurfaceHolder
             return;
         }
 
-        int targetWidth = parentWidth;
-        int targetHeight = Math.round((float) targetWidth * videoHeight / videoWidth);
+        int targetHeight = Math.round((float) parentWidth * videoHeight / videoWidth);
 
         ViewGroup.LayoutParams currentParams = surfaceView.getLayoutParams();
         FrameLayout.LayoutParams layoutParams;
         if (currentParams instanceof FrameLayout.LayoutParams) {
             layoutParams = (FrameLayout.LayoutParams) currentParams;
         } else {
-            layoutParams = new FrameLayout.LayoutParams(targetWidth, targetHeight);
+            layoutParams = new FrameLayout.LayoutParams(parentWidth, targetHeight);
         }
 
-        layoutParams.width = targetWidth;
+        layoutParams.width = parentWidth;
         layoutParams.height = targetHeight;
         layoutParams.gravity = Gravity.CENTER;
         surfaceView.setLayoutParams(layoutParams);
@@ -351,5 +357,18 @@ public class VideoCarActivity extends AppCompatActivity implements SurfaceHolder
             normalized += duration;
         }
         return normalized;
+    }
+
+    private void centerNavigationIcon(MaterialToolbar toolbar) {
+        toolbar.post(() -> {
+            for (int i = 0; i < toolbar.getChildCount(); i++) {
+                if (toolbar.getChildAt(i) instanceof ImageButton) {
+                    Toolbar.LayoutParams params = (Toolbar.LayoutParams) toolbar.getChildAt(i).getLayoutParams();
+                    params.gravity = Gravity.CENTER_VERTICAL;
+                    toolbar.getChildAt(i).setLayoutParams(params);
+                    return;
+                }
+            }
+        });
     }
 }

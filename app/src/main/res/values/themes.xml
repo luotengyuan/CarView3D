@@ -17,7 +17,7 @@
         <item name="android:background">?attr/colorPrimary</item>
         <item name="android:minHeight">28dp</item>
         <item name="minHeight">28dp</item>
-        <item name="maxButtonHeight">20dp</item>
+        <item name="maxButtonHeight">24dp</item>
         <item name="titleTextColor">@android:color/white</item>
         <item name="subtitleTextColor">@android:color/white</item>
         <item name="navigationIconTint">@android:color/white</item>
